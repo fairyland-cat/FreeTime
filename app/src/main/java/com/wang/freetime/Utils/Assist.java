@@ -21,7 +21,7 @@ public class Assist {
         return assist;
     }
 
-    public void getBoon_Photo(final ResponseListener listener, int page){
+    public void getBoon_Photo(final ResponseListener listener, int page,String type){
 
         /**
          * Created by wang on 2017.6.11
@@ -32,7 +32,7 @@ public class Assist {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         NetApi net=retrofit.create(NetApi.class);
-        Call<Photo> photo=net.getboon("10",page);
+        Call<Photo> photo=net.getboon(type,"10",page);
         photo.enqueue(new Callback<Photo>() {
             @Override
             public void onResponse(Call<Photo> call, Response<Photo> response) {
@@ -55,7 +55,5 @@ public class Assist {
         void onSuccess(Photo pic);
         void onFail();
     }
-
-
 
 }

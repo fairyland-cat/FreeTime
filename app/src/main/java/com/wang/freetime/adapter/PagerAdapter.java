@@ -2,7 +2,7 @@ package com.wang.freetime.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Created by wang on 2017.5.26.
  */
 
-public class PagerAdapter extends FragmentPagerAdapter {
+public class PagerAdapter extends FragmentStatePagerAdapter {
     private ArrayList<Fragment> fragments;
     public PagerAdapter(FragmentManager fm, ArrayList<Fragment> fragments) {
         super(fm);

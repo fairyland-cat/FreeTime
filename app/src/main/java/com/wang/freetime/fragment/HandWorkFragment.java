@@ -81,7 +81,7 @@ public class HandWorkFragment extends Fragment {
             public void onLoadMore() {
                 Pager++;
                 getPaper();
-                mRecyclerView.refreshComplete();
+                mRecyclerView.loadMoreComplete();
             }
         });
         return v;

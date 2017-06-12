@@ -50,6 +50,7 @@ public class Photo {
         private String createdAt;
         private String url;
         private boolean used;
+        private String desc;
 
         public String get_id() {
             return _id;
@@ -81,6 +82,14 @@ public class Photo {
 
         public void setUsed(boolean used) {
             this.used = used;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public void setDesc(String desc) {
+            this.desc = desc;
         }
     }
 }

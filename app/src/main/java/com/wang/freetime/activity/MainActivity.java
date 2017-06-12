@@ -12,6 +12,7 @@ import com.roughike.bottombar.OnTabSelectListener;
 import com.wang.freetime.R;
 import com.wang.freetime.fragment.HandWorkFragment;
 import com.wang.freetime.fragment.PhotoFragment;
+import com.wang.freetime.fragment.VideoFragment;
 
 import java.util.ArrayList;
 
@@ -34,7 +35,38 @@ public class MainActivity extends BaseActivity{
          * 设置viewpager适配器
          */
         mPager.setAdapter(mPagerAdapter);
+        mPager.setOffscreenPageLimit(3);
         mPager.setCurrentItem(0);
+        /**
+         * Created by wang on 2017.6.12
+         * viewpager滑动监听事件
+         */
+        mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                switch (position){
+                    case 0:
+                        title.setText(R.string.handwork);
+                        break;
+                    case 1:
+                        title.setText(R.string.photo);
+                        break;
+                    case 2:
+                        title.setText(R.string.video);
+                }
+                bottomBar.setDefaultTabPosition(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         /**
          * Created by wang on 2017.6.8
          * 实现底部菜单的点击事件
@@ -54,6 +86,8 @@ public class MainActivity extends BaseActivity{
                     case R.id.tab_user:
                         break;
                     case R.id.tab_video:
+                        mPager.setCurrentItem(2);
+                        title.setText(R.string.video);
                         break;
                 }
             }
@@ -74,6 +108,8 @@ public class MainActivity extends BaseActivity{
         fm_list.add(fragment);
         PhotoFragment photoFragment=new PhotoFragment();
         fm_list.add(photoFragment);
+        VideoFragment videoFragment=new VideoFragment();
+        fm_list.add(videoFragment);
     }
 
 }

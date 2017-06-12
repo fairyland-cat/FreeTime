@@ -14,6 +14,7 @@ import retrofit2.http.Path;
 
 public interface NetApi {
     @Headers("User-Agent:Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
-    @GET("api/data/福利/{number}/{page}")
-    Call<Photo> getboon(@Path("number") String number,@Path("page") int page);
+    @GET("api/data/{type}/{number}/{page}")
+    Call<Photo> getboon(@Path("type") String type, @Path("number") String number,@Path("page") int page);
+
 }

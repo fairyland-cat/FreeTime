@@ -4,7 +4,7 @@ package com.wang.freetime.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,26 +13,24 @@ import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.wang.freetime.R;
 import com.wang.freetime.Utils.Assist;
-import com.wang.freetime.adapter.PhotoAdapter;
+import com.wang.freetime.adapter.VideoAdapter;
 import com.wang.freetime.model.Photo;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.wang.freetime.R.id.mRecyclerView;
-
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PhotoFragment extends Fragment {
+public class VideoFragment extends Fragment {
 
     private XRecyclerView recyclerView;
     private Context context;
     private int page=1;
-    private PhotoAdapter m_Adapter;
-    private List<Photo.ResultsBean> mlist=new ArrayList<>();
+    private VideoAdapter myAdapter;
+    private List<Photo.ResultsBean> mList=new ArrayList<>();
 
-    public PhotoFragment() {
+    public VideoFragment() {
         // Required empty public constructor
     }
 
@@ -46,62 +44,57 @@ public class PhotoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_hand_work, container, false);
-        recyclerView= (XRecyclerView) view.findViewById(mRecyclerView);
-        StaggeredGridLayoutManager staggered=new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(staggered);
+        recyclerView= (XRecyclerView) view.findViewById(R.id.mRecyclerView);
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false);
+        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setRefreshProgressStyle(ProgressStyle.BallClipRotateMultiple);
         recyclerView.setLoadingMoreProgressStyle(ProgressStyle.Pacman);
         recyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
                 page=1;
-                getData();
+                getVideo();
                 recyclerView.refreshComplete();
             }
 
             @Override
             public void onLoadMore() {
                 page++;
-                getData();
+                getVideo();
                 recyclerView.loadMoreComplete();
             }
         });
-        getData();
+        getVideo();
         // Inflate the layout for this fragment
         return view;
     }
-    private void getData(){
+
+    private void getVideo(){
         Assist.getAssist().getBoon_Photo(new Assist.ResponseListener() {
             @Override
             public void onSuccess(Photo pic) {
                 if (page==1){
-                    mlist.clear();
+                    mList.clear();
                 }
-                mlist.addAll(pic.getResults());
-
-                if (m_Adapter==null){
-                    m_Adapter=new PhotoAdapter(context,mlist);
-                    m_Adapter.setMyOnclick(new PhotoAdapter.OnClickView() {
+                mList.addAll(pic.getResults());
+                if (myAdapter==null){
+                    myAdapter=new VideoAdapter(context,mList);
+                    recyclerView.setAdapter(myAdapter);
+                    myAdapter.setOnItemClick(new VideoAdapter.Video_OnItemClick() {
                         @Override
-                        public void OnClick_Love(String url) {
-
-                        }
-
-                        @Override
-                        public void OnClick_Down(String url) {
+                        public void ClickItem(String url) {
 
                         }
                     });
-                    recyclerView.setAdapter(m_Adapter);
                 }
-                m_Adapter.notifyDataSetChanged();
+                myAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onFail() {
 
             }
-        },page,"福利");
+        },page,"休息视频");
     }
 
 }
