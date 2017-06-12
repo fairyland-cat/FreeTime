@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_handwork"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="9dp">
+
+    <ImageView
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:scaleType="centerInside"
+        android:layout_alignParentStart="true"
+        android:layout_marginEnd="15dp"
+        android:id="@+id/imageView" />
+
+    <TextView
+        tools:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/imageView"
+        android:id="@+id/title"
+        android:paddingTop="9dp"
+        android:layout_alignTop="@+id/imageView" />
+
+    <TextView
+        tools:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imageView"
+        android:layout_alignStart="@+id/title"
+        android:paddingBottom="9dp"
+        android:id="@+id/read" />
+
+    <TextView
+        tools:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/read"
+        android:layout_toEndOf="@+id/read"
+        android:layout_marginStart="18dp"
+        android:paddingBottom="9dp"
+        android:id="@+id/love" />
+</RelativeLayout>

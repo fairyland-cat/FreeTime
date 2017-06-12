@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        id="@+id/tab_handwork"
+        icon="@drawable/handwork"
+        title="HandWork"
+        barColorWhenSelected="@color/tab_handwork_color"/>
+    <tab
+        id="@+id/tab_photo"
+        icon="@drawable/photo"
+        title="Photo"
+        barColorWhenSelected="@color/tab_photo_color"/>
+    <tab
+        id="@+id/tab_video"
+        icon="@drawable/video"
+        title="Video"
+        barColorWhenSelected="@color/tab_video_color"/>
+    <tab
+        id="@+id/tab_user"
+        icon="@drawable/user"
+        title="User"
+        barColorWhenSelected="@color/tab_user_color"/>
+</tabs>

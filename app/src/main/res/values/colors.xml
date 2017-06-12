@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3f51b5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    //tab颜色配置
+    <color name="tab_handwork_color">#b9b57c3f</color>
+    <color name="tab_photo_color">#bfc385e7</color>
+    <color name="tab_video_color">#c2489668</color>
+    <color name="tab_user_color">#cac8c7b4</color>
+    //item背景色
+    <color name="one_color">#91ca90</color>
+    <color name="two_color">#d3d3f7</color>
+    <color name="three_color">#dede11</color>
+    <color name="four_color">#53cea0d4</color>
+    <color name="five_color">#8293a2</color>
+
+    //图片item背景色
+    <color name="Photo_color">#ceecf1ec</color>
+</resources>
