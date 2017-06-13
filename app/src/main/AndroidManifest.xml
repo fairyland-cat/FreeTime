@@ -28,8 +28,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.DetailsActivity"></activity>
-        <activity android:name=".activity.AccountActivity"></activity>
+        <activity android:name=".activity.DetailsActivity">
+
+        </activity>
+        <activity android:name=".activity.AccountActivity">
+
+        </activity>
     </application>
 
 </manifest>

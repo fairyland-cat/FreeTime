@@ -1,6 +1,7 @@
 package com.wang.freetime.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 
 import com.wang.freetime.R;
 import com.wang.freetime.Utils.Operation;
+import com.wang.freetime.Utils.Variable;
+import com.wang.freetime.activity.AccountActivity;
 import com.wang.freetime.model.User;
 
 import java.io.File;
@@ -77,6 +80,7 @@ public class User_Fragment extends Fragment {
                 case R.id.user_name:
                     if (BmobUser.getCurrentUser(User.class)==null){
                         //启动登陆页面
+                        startActivityForResult(new Intent(context, AccountActivity.class), Variable.request_account);
                     }
                     break;
             }

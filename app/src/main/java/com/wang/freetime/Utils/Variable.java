@@ -16,4 +16,6 @@ public  class Variable {
     public static final int content_user=0x04;//个人详情页
 
     public static final int request_code=0x00;
+
+    public static final int request_account=0x05;
 }
