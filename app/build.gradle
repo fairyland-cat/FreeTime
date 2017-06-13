@@ -31,8 +31,16 @@ dependencies {
     compile 'org.jsoup:jsoup:1.10.2'
     compile 'com.github.bumptech.glide:glide:4.0.0-RC0'
     compile 'com.orhanobut:logger:2.1.1'
-    compile 'com.squareup.retrofit2:retrofit:2.3.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    compile ('com.squareup.retrofit2:retrofit:2.3.0'){
+        exclude group : 'com.squareup.okhttp3'
+    }
+    compile ('com.squareup.retrofit2:converter-gson:2.3.0'){
+        exclude group:'com.google.code.gson'
+        exclude group : 'com.squareup.okhttp3'
+    }
     testCompile 'junit:junit:4.12'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0-RC0'
+    //bmob-sdk：Bmob的android sdk包，包含了Bmob的数据存储、文件等服务，以下是最新的bmob-sdk:
+    compile 'cn.bmob.android:bmob-sdk:3.5.5'
+    //如果你想应用能够兼容Android6.0，请添加此依赖(org.apache.http.legacy.jar)
+    compile 'cn.bmob.android:http-legacy:1.0'
 }

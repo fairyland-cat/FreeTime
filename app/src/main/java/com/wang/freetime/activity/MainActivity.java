@@ -12,9 +12,12 @@ import com.roughike.bottombar.OnTabSelectListener;
 import com.wang.freetime.R;
 import com.wang.freetime.fragment.HandWorkFragment;
 import com.wang.freetime.fragment.PhotoFragment;
+import com.wang.freetime.fragment.User_Fragment;
 import com.wang.freetime.fragment.VideoFragment;
 
 import java.util.ArrayList;
+
+import cn.bmob.v3.Bmob;
 
 public class MainActivity extends BaseActivity{
     private BottomBar bottomBar;
@@ -58,6 +61,10 @@ public class MainActivity extends BaseActivity{
                         break;
                     case 2:
                         title.setText(R.string.video);
+                        break;
+                    case 3:
+                        title.setText(R.string.user);
+                        break;
                 }
                 bottomBar.setDefaultTabPosition(position);
             }
@@ -84,6 +91,8 @@ public class MainActivity extends BaseActivity{
                         title.setText(R.string.photo);
                         break;
                     case R.id.tab_user:
+                        mPager.setCurrentItem(3);
+                        title.setText(R.string.user);
                         break;
                     case R.id.tab_video:
                         mPager.setCurrentItem(2);
@@ -98,6 +107,7 @@ public class MainActivity extends BaseActivity{
         mPager= (ViewPager) findViewById(R.id.contentContainer);
         title= (TextView) findViewById(R.id.title);
         mPagerAdapter=new com.wang.freetime.adapter.PagerAdapter(getSupportFragmentManager(),fm_list);
+        Bmob.initialize(this,"3f5daa81e7fc346d1d07fef5c2105f58");
     }
     /**
      * Created by wang on 2017.6.8
@@ -110,6 +120,8 @@ public class MainActivity extends BaseActivity{
         fm_list.add(photoFragment);
         VideoFragment videoFragment=new VideoFragment();
         fm_list.add(videoFragment);
+        User_Fragment user_fragment=new User_Fragment();
+        fm_list.add(user_fragment);
     }
 
 }

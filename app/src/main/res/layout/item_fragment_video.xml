@@ -9,14 +9,12 @@
     android:layout_marginTop="3dp"
     tools:context="com.wang.freetime.fragment.VideoFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:id="@+id/video_name"
         android:drawablePadding="3dp"
         android:drawableStart="@drawable/video_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/create_time"
         android:layout_below="@id/video_name"

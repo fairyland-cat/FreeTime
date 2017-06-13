@@ -84,4 +84,30 @@ public class Operation {
         void downOver();
     }
 
+    /**
+     * Created by wang on 2017.6.12
+     * 获取本地图片并转换成bitmap
+     */
+    public Bitmap decodeBitmap(String path){
+        BitmapFactory.Options op = new BitmapFactory.Options();
+        //inJustDecodeBounds
+        //If set to true, the decoder will return null (no bitmap), but the out…
+        op.inJustDecodeBounds = true;
+        Bitmap bmp = BitmapFactory.decodeFile(path, op); //获取尺寸信息
+        //获取比例大小
+        int wRatio = op.outWidth/(getWidth()/4);
+        int hRatio = op.outHeight/(getWidth()/4);
+        //如果超出指定大小，则缩小相应的比例
+        if(wRatio > 1 && hRatio > 1){
+            if(wRatio > hRatio){
+                op.inSampleSize = wRatio;
+            }else{
+                op.inSampleSize = hRatio;
+            }
+        }
+        op.inJustDecodeBounds = false;
+        bmp = BitmapFactory.decodeFile(path, op);
+        return bmp;
+    }
+
 }
