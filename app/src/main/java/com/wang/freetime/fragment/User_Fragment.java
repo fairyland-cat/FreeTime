@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -27,6 +28,8 @@ import java.util.Map;
 
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.DownloadFileListener;
 
 
 public class User_Fragment extends Fragment {
@@ -34,6 +37,7 @@ public class User_Fragment extends Fragment {
     private TextView user_name;
     private ImageView user_icon;
     private ListView user_menu;
+    private ImageButton exit;
     private Context context;
     private List<Map<String,Object>> my_menu=new ArrayList<>();
 
@@ -50,20 +54,38 @@ public class User_Fragment extends Fragment {
         user_name= (TextView) view.findViewById(R.id.user_name);
         user_icon= (ImageView) view.findViewById(R.id.user_icon);
         user_menu= (ListView) view.findViewById(R.id.user_menu);
+        exit= (ImageButton) view.findViewById(R.id.quit);
         user_icon.setMaxWidth(operation.getWidth()/4);
         user_name.setOnClickListener(new myOnclick());
         user_menu.setOnItemClickListener(new myItemOnClick());
         user_icon.setOnClickListener(new myOnclick());
 
-        User user= BmobUser.getCurrentUser(User.class);
-        if (user!=null){
-            user_name.setText(user.getUsername());
-            setUser_pic(user.getIcon());
-        }
+        setUserData();
         user_menu.setAdapter(new SimpleAdapter(context,my_menu,R.layout.item_user_menu,
                 new String[]{"menu"},new int[]{R.id.menu_name}));
         // Inflate the layout for this fragment
         return view;
+    }
+
+    private void setUserData(){
+        final User user= BmobUser.getCurrentUser(User.class);
+        if (user!=null){
+            user_name.setText(user.getUsername());
+            if (user.getIcon()!=null){
+                setUser_pic(user.getIcon());
+            }
+            exit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    user.logOut();
+                    setUserData();
+                }
+            });
+            exit.setVisibility(View.VISIBLE);
+        }else {
+            user_name.setText(R.string.login);
+            user_icon.setImageResource(R.drawable.icon);
+        }
     }
 
     /**
@@ -105,12 +127,24 @@ public class User_Fragment extends Fragment {
         this.context=context;
     }
     private void setUser_pic(BmobFile file){
-        Operation operation=new Operation(context);
-        File save_path=new File(context.getExternalCacheDir()+File.separator+"bmob");
-        String path=context.getExternalCacheDir()+File.separator+"bmob"+File.separator+file.getFilename();
-        if (new File(path).exists()){
-            user_icon.setImageBitmap(operation.decodeBitmap(path));
-        }
+        final Operation operation=new Operation(context);
+        final String path=context.getExternalCacheDir()+File.separator+"bmob"+File.separator+file.getFilename();
+        File save_path=new File(path);
+        if (!new File(path).exists()){
+            file.download(save_path, new DownloadFileListener() {
+                @Override
+                public void done(String s, BmobException e) {
+                    if (e==null){
+                        user_icon.setImageBitmap(operation.decodeBitmap(path));
+                    }
+                }
+
+                @Override
+                public void onProgress(Integer integer, long l) {
+
+                }
+            });
+        }else {user_icon.setImageBitmap(operation.decodeBitmap(path));}
     }
 
     private void initmenu(){
@@ -123,4 +157,11 @@ public class User_Fragment extends Fragment {
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode==Variable.result_true){
+            setUserData();
+        }
+    }
 }

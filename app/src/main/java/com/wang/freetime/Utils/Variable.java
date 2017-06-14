@@ -15,7 +15,15 @@ public  class Variable {
     public static final int content_video=0x03;//视频详情页
     public static final int content_user=0x04;//个人详情页
 
-    public static final int request_code=0x00;
+    public static final int request_code=0x00;//读写权限的请求码
+    public static final int request_camera=0x06;//照相机权限请求码
+
+    public static final int request_photo=0x07;//相册请求码
+    public static final int request_camera_code=0x08;//照相机启动请求码
+    public static final int request_crop=0x09;//裁剪请求码
+
 
     public static final int request_account=0x05;
+    public static final int result_true=0;
+    public static final int result_false=1;
 }

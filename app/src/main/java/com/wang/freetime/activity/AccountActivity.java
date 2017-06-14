@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.wang.freetime.R;
+import com.wang.freetime.Utils.Variable;
 import com.wang.freetime.fragment.LoginFragment;
 import com.wang.freetime.fragment.RegisterFragment;
 
@@ -49,6 +50,7 @@ public class AccountActivity extends BaseActivity implements LoginFragment.OnCli
 
     @Override
     public void exit() {
+        setResult(Variable.result_true);
         finish();
     }
 }

@@ -17,4 +17,7 @@
 
     //图片item背景色
     <color name="Photo_color">#ceecf1ec</color>
+    //popup菜单按钮颜色
+    <color name="pop_color">#f70404</color>
+    <color name="pop_color2">#f0be79</color>
 </resources>
