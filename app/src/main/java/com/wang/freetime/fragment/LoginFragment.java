@@ -7,11 +7,17 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.orhanobut.logger.Logger;
 import com.wang.freetime.R;
+import com.wang.freetime.model.User;
+
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.LogInListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,18 +27,21 @@ public class LoginFragment extends Fragment {
     OnClickView register_click;
     private EditText use_name,pass_word;
     private TextView register;
-    private ImageView img_icon;
+    private Button log_in;
+    private Context context;
     public LoginFragment() {
         // Required empty public constructor
     }
 
     public interface OnClickView{
         void OnClick_Register();
+        void exit();
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        this.context=context;
         if (context instanceof OnClickView){
             register_click= (OnClickView) context;
         }
@@ -45,6 +54,7 @@ public class LoginFragment extends Fragment {
         initview(view);
         myOnClick OnClick=new myOnClick();
         register.setOnClickListener(OnClick);
+        log_in.setOnClickListener(OnClick);
         // Inflate the layout for this fragment
         return view;
     }
@@ -53,7 +63,27 @@ public class LoginFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-            register_click.OnClick_Register();
+            switch (view.getId()){
+                case R.id.register:
+                    register_click.OnClick_Register();
+                    break;
+                case R.id.log_in:
+                    String name=use_name.getText().toString();
+                    String pass=pass_word.getText().toString();
+                    User user=new User();
+                    user.loginByAccount(name, pass, new LogInListener<User>() {
+                        @Override
+                        public void done(User user, BmobException e) {
+                            if (e==null){
+                                register_click.exit();
+                                Toast.makeText(context, "登陆成功", Toast.LENGTH_SHORT).show();
+                            }else {
+                                Logger.d(e);
+                            }
+                        }
+                    });
+                    break;
+            }
         }
     }
 
@@ -61,6 +91,7 @@ public class LoginFragment extends Fragment {
         use_name= (EditText) view.findViewById(R.id.user_name);
         pass_word= (EditText) view.findViewById(R.id.password);
         register= (TextView) view.findViewById(R.id.register);
+        log_in= (Button) view.findViewById(R.id.log_in);
     }
 
 }
