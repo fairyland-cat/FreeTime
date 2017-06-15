@@ -1,25 +1,26 @@
 package com.wang.freetime.fragment;
 
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.wang.freetime.R;
 import com.wang.freetime.Utils.Assist;
-import com.wang.freetime.Utils.Operation;
+import com.wang.freetime.Utils.Variable;
+import com.wang.freetime.activity.DetailsActivity;
 import com.wang.freetime.adapter.PhotoAdapter;
 import com.wang.freetime.model.Photo;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,15 +36,23 @@ public class PhotoFragment extends Fragment {
     private int page=1;
     private PhotoAdapter m_Adapter;
     private List<Photo.ResultsBean> mlist=new ArrayList<>();
+    private Photo_Listening myListening;
 
     public PhotoFragment() {
         // Required empty public constructor
+    }
+
+    public interface Photo_Listening{
+        void upData();
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         this.context=context;
+        if (context instanceof Photo_Listening){
+            myListening=(Photo_Listening) context;
+        }
     }
 
     @Override
@@ -71,6 +80,10 @@ public class PhotoFragment extends Fragment {
             }
         });
         getData();
+        myBroadcast mybroadcast=new myBroadcast();
+        IntentFilter intentFilter=new IntentFilter();
+        intentFilter.addAction("com.wang.free_time.photo_fragment.broadcast");
+        context.registerReceiver(mybroadcast,intentFilter);
         // Inflate the layout for this fragment
         return view;
     }
@@ -87,20 +100,11 @@ public class PhotoFragment extends Fragment {
                     m_Adapter=new PhotoAdapter(context,mlist);
                     m_Adapter.setMyOnclick(new PhotoAdapter.OnClickView() {
                         @Override
-                        public void OnClick_Love(String url) {
-
-                        }
-
-                        @Override
-                        public void OnClick_Down(String url) {
-                            final File file=new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"boon");
-                            Operation.savePicture(url,file);
-                            Operation.setMyListening(new Operation.MyListening() {
-                                @Override
-                                public void downOver() {
-                                    Toast.makeText(context, "图片已存储到"+file, Toast.LENGTH_LONG).show();
-                                }
-                            });
+                        public void OnClick_img(String url) {
+                            Intent intent=new Intent(context, DetailsActivity.class);
+                            intent.putExtra("type", Variable.content_photo);
+                            intent.putExtra("url",url);
+                            startActivity(intent);
                         }
                     });
                     recyclerView.setAdapter(m_Adapter);
@@ -115,4 +119,19 @@ public class PhotoFragment extends Fragment {
         },page,"福利");
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode==Variable.result_true){
+            myListening.upData();
+        }
+    }
+
+    class myBroadcast extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            myListening.upData();
+        }
+    }
 }

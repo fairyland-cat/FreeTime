@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import com.wang.freetime.R;
 import com.wang.freetime.Utils.Variable;
 import com.wang.freetime.fragment.HandWork_DetailsFragment;
+import com.wang.freetime.fragment.Photo_DetailsFragment;
 
 /**
  * FreeTime
@@ -32,10 +33,17 @@ public class DetailsActivity extends BaseActivity {
                 fragment=HandWork_DetailsFragment.newInstance(getIntent().getStringExtra("title"),
                         getIntent().getStringExtra("url"));
                 FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.m_fragment,fragment);
+                fragmentTransaction.replace(R.id.m_fragment,fragment);
                 fragmentTransaction.commit();
                 break;
             case Variable.content_photo:
+                Photo_DetailsFragment photo_detailsFragment=new Photo_DetailsFragment();
+                Bundle bundle=new Bundle();
+                bundle.putString("url",getIntent().getStringExtra("url"));
+                photo_detailsFragment.setArguments(bundle);
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.m_fragment,photo_detailsFragment);
+                fragmentTransaction.commit();
                 break;
 
         }

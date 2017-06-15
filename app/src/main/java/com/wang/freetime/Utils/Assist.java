@@ -10,10 +10,15 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.wang.freetime.model.Photo;
+import com.wang.freetime.model.Save_Love;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -26,7 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class Assist {
-
+    private static is_Save save;
     private Assist(){}
     private static final Assist assist=new Assist();
     public static Assist getAssist(){
@@ -116,6 +121,31 @@ public class Assist {
         }
     }
 
+    public static void isSave(String url){
+        BmobQuery<Save_Love> query=new BmobQuery<>();
+        query.addWhereEqualTo("url",url);
+        query.findObjects(new FindListener<Save_Love>() {
+            @Override
+            public void done(List<Save_Love> list, BmobException e) {
+                if (e==null){
+                    if (list.size()!=0){
+                        save.issave(list.get(0).getObjectId());
+                    }else {
+                        save.unsave();
+                    }
+                }
+            }
+        });
+    }
+
+    public interface is_Save{
+        void issave(String id);
+        void unsave();
+    }
+
+    public void setSave(is_Save save) {
+        this.save = save;
+    }
 
     public interface ResponseListener {
 

@@ -22,6 +22,8 @@ public  class Variable {
     public static final int request_camera_code=0x08;//照相机启动请求码
     public static final int request_crop=0x09;//裁剪请求码
 
+    public static final int request_login=0x1;//福利页面跳转到登陆页面请求码
+
 
     public static final int request_account=0x05;
     public static final int result_true=0;

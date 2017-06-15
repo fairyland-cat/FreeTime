@@ -79,6 +79,7 @@ public class LoginFragment extends Fragment {
                                 Toast.makeText(context, "登陆成功", Toast.LENGTH_SHORT).show();
                             }else {
                                 Logger.d(e);
+                                Toast.makeText(context, "用户名或密码错误", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

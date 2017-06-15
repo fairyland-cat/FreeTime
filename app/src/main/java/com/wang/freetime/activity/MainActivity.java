@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 import cn.bmob.v3.Bmob;
 
-public class MainActivity extends BaseActivity{
+public class MainActivity extends BaseActivity implements PhotoFragment.Photo_Listening{
     private BottomBar bottomBar;
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
@@ -91,6 +91,7 @@ public class MainActivity extends BaseActivity{
                         title.setText(R.string.photo);
                         break;
                     case R.id.tab_user:
+
                         mPager.setCurrentItem(3);
                         title.setText(R.string.user);
                         break;
@@ -124,4 +125,9 @@ public class MainActivity extends BaseActivity{
         fm_list.add(user_fragment);
     }
 
+    @Override
+    public void upData() {
+        User_Fragment user= (User_Fragment) fm_list.get(3);
+        user.setUserData();
+    }
 }

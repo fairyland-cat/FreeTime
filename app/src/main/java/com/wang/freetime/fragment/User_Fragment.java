@@ -67,7 +67,7 @@ public class User_Fragment extends Fragment {
         return view;
     }
 
-    private void setUserData(){
+    public void setUserData(){
         final User user= BmobUser.getCurrentUser(User.class);
         if (user!=null){
             user_name.setText(user.getUsername());
@@ -157,6 +157,7 @@ public class User_Fragment extends Fragment {
         }
 
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
