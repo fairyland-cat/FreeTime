@@ -83,6 +83,7 @@ public class User_Fragment extends Fragment {
             });
             exit.setVisibility(View.VISIBLE);
         }else {
+            exit.setVisibility(View.INVISIBLE);
             user_name.setText(R.string.login);
             user_icon.setImageResource(R.drawable.icon);
         }

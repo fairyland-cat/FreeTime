@@ -3,19 +3,23 @@ package com.wang.freetime.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.wang.freetime.R;
 import com.wang.freetime.Utils.Assist;
+import com.wang.freetime.Utils.Operation;
 import com.wang.freetime.adapter.PhotoAdapter;
 import com.wang.freetime.model.Photo;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,7 +93,14 @@ public class PhotoFragment extends Fragment {
 
                         @Override
                         public void OnClick_Down(String url) {
-
+                            final File file=new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"boon");
+                            Operation.savePicture(url,file);
+                            Operation.setMyListening(new Operation.MyListening() {
+                                @Override
+                                public void downOver() {
+                                    Toast.makeText(context, "图片已存储到"+file, Toast.LENGTH_LONG).show();
+                                }
+                            });
                         }
                     });
                     recyclerView.setAdapter(m_Adapter);

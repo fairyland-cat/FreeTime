@@ -23,7 +23,7 @@ import java.net.URL;
 
 public class Operation {
     private Context mContext;
-    private MyListening myListening;
+    private static MyListening myListen;
     public Operation(Context context) {
         mContext = context;
     }
@@ -33,8 +33,12 @@ public class Operation {
         return dm.widthPixels;
     }
 
-    //Glide保存图片
-    public void savePicture(final String url){
+    //获取网络图片，并保存图片到本地
+    public static void savePicture(final String url,File file){
+        if (!file.exists()){
+            file.mkdir();
+        }
+        final String photo_path=file.getPath()+File.separator+url.hashCode()+".jpg";
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -42,7 +46,7 @@ public class Operation {
                     URL m_url=new URL(url);
                     InputStream ism=m_url.openStream();
                     Bitmap btm= BitmapFactory.decodeStream(ism);
-                    savaFileToSD(String.valueOf(url.hashCode()),btm);
+                    savaFileToSD(photo_path,btm);
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -52,32 +56,34 @@ public class Operation {
         }).start();
     }
     //往SD卡写入文件的方法
-    public void savaFileToSD(String filename, Bitmap bitmap) throws IOException {
-        File filePath =new File(mContext.getExternalCacheDir(),"photo") ;
+    private static void savaFileToSD(String filepath, Bitmap bitmap) throws IOException {
+        /*File filePath =new File(mContext.getExternalCacheDir(),"photo") ;
         if (!filePath.exists()){
             filePath.mkdirs();
         }
         String photo_path=filePath.getPath()+File.separator+filename+".jpg";
-        Logger.d(photo_path);
-        FileOutputStream output = new FileOutputStream(photo_path);
+        Logger.d(photo_path);*/
+        FileOutputStream output = new FileOutputStream(filepath);
         bitmap.compress(Bitmap.CompressFormat.JPEG,100,output);
         output.flush();
         output.close();
         handler.sendEmptyMessage(1);
         }
 
-    private Handler handler=new Handler(new Handler.Callback() {
+    private static Handler handler=new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
-                myListening.downOver();
-                Logger.d("下载完成");
-                return true;
+            if (myListen!=null){
+                myListen.downOver();
+            }
+            Logger.d("下载完成");
+            return true;
         }
     });
 
 
-    public void setMyListening(MyListening myListening) {
-        this.myListening = myListening;
+    public static void setMyListening(MyListening myListening) {
+        myListen = myListening;
     }
 
     public interface MyListening{

@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.wang.freetime.R;
 import com.wang.freetime.Utils.Assist;
@@ -194,15 +195,16 @@ public class RegisterFragment extends Fragment {
                 Operation op=new Operation(context);
                 String path=context.getExternalCacheDir()+
                         File.separator+"bmob"+File.separator+"user_icon.jpg";
-                Bitmap icon=op.decodeBitmap(path);
+                final Bitmap icon=op.decodeBitmap(path);
                 if (icon!=null){
-                    user_icon.setImageBitmap(icon);
                     bmobfile=new BmobFile(new File(path));
                     bmobfile.uploadblock(new UploadFileListener() {
                         @Override
                         public void done(BmobException e) {
                             if (e==null){
-
+                                user_icon.setImageBitmap(icon);
+                            }else {
+                                Toast.makeText(context, "文件上传失败", Toast.LENGTH_LONG).show();
                             }
                         }
                     });

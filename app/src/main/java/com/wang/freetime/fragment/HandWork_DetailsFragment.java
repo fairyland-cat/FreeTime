@@ -36,7 +36,6 @@ public class HandWork_DetailsFragment extends Fragment implements View.OnTouchLi
     private Context context;
     private TextView mTitle,mContent;
     private int content_flg=0x001;
-    private Boolean isRead=false;
     private Operation operation;
     public HandWork_DetailsFragment() {
         // Required empty public constructor
@@ -133,7 +132,8 @@ public class HandWork_DetailsFragment extends Fragment implements View.OnTouchLi
                     }else {
                         Drawable drawable=getResources().getDrawable(R.drawable.load,null);
                         drawable.setBounds(0,0,64,64);
-                        operation.savePicture(s);
+                        File file=new File(context.getExternalCacheDir(),"photo");
+                        operation.savePicture(s,file);
                         return drawable;
                     }
                 }

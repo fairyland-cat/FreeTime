@@ -68,7 +68,10 @@ public class Assist {
         Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra("return-data",false);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-        fragment.startActivityForResult(intent,Variable.request_camera_code);
+        ComponentName componentName=intent.resolveActivity(fragment.getContext().getPackageManager());
+        if (componentName!=null){
+            fragment.startActivityForResult(intent,Variable.request_camera_code);
+        }
     }
     //启动相册
     public static void startPhoto(Fragment fragment){
@@ -106,12 +109,11 @@ public class Assist {
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
         intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
         intent.putExtra("noFaceDetection", true);
-        /*ComponentName componentName = intent.resolveActivity(context.getPackageManager());
+        ComponentName componentName = intent.resolveActivity(fragment.getContext().getPackageManager());
         Log.d("TAG", "cropphoto: "+componentName);
         if (componentName!=null){
             fragment.startActivityForResult(intent,Variable.request_crop);
-        }*/
-        fragment.startActivityForResult(intent,Variable.request_crop);
+        }
     }
 
 
