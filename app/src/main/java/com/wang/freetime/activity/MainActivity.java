@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 import cn.bmob.v3.Bmob;
 
-public class MainActivity extends BaseActivity implements PhotoFragment.Photo_Listening{
+public class MainActivity extends BaseActivity implements PhotoFragment.Photo_Listening,User_Fragment.user_action{
     private BottomBar bottomBar;
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
@@ -38,7 +38,7 @@ public class MainActivity extends BaseActivity implements PhotoFragment.Photo_Li
          * 设置viewpager适配器
          */
         mPager.setAdapter(mPagerAdapter);
-        mPager.setOffscreenPageLimit(3);
+        mPager.setOffscreenPageLimit(4);
         mPager.setCurrentItem(0);
         /**
          * Created by wang on 2017.6.12
@@ -129,5 +129,10 @@ public class MainActivity extends BaseActivity implements PhotoFragment.Photo_Li
     public void upData() {
         User_Fragment user= (User_Fragment) fm_list.get(3);
         user.setUserData();
+    }
+
+    @Override
+    public void exit() {
+        finish();
     }
 }

@@ -2,6 +2,7 @@
 <resources>
     <color name="colorPrimary">#3f51b5</color>
     <color name="colorPrimaryDark">#303F9F</color>
+    <color name="toolbar">#8219f1</color>
     <color name="colorAccent">#FF4081</color>
     //tab颜色配置
     <color name="tab_handwork_color">#b9b57c3f</color>

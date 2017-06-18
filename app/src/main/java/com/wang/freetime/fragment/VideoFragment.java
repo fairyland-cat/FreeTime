@@ -2,6 +2,7 @@ package com.wang.freetime.fragment;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,8 @@ import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.wang.freetime.R;
 import com.wang.freetime.Utils.Assist;
+import com.wang.freetime.Utils.Variable;
+import com.wang.freetime.activity.DetailsActivity;
 import com.wang.freetime.adapter.VideoAdapter;
 import com.wang.freetime.model.Photo;
 
@@ -83,7 +86,10 @@ public class VideoFragment extends Fragment {
                     myAdapter.setOnItemClick(new VideoAdapter.Video_OnItemClick() {
                         @Override
                         public void ClickItem(String url) {
-
+                            Intent intent=new Intent(context, DetailsActivity.class);
+                            intent.putExtra("type", Variable.content_video);
+                            intent.putExtra("url",url);
+                            startActivity(intent);
                         }
                     });
                 }

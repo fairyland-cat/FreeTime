@@ -9,16 +9,23 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
 import com.wang.freetime.model.Photo;
 import com.wang.freetime.model.Save_Love;
+import com.wang.freetime.model.User;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -44,9 +51,22 @@ public class Assist {
          * Created by wang on 2017.6.11
          * 请求干货集中营的福利图片
          */
+        OkHttpClient ok=new OkHttpClient.Builder().addInterceptor(new Interceptor() {
+            @Override
+            public okhttp3.Response intercept(Chain chain) throws IOException {
+                Request request = chain.request();
+                Logger.addLogAdapter(new AndroidLogAdapter());
+                    Logger.e(String.format("发送请求 %s on %s%n%s",
+                            request.url(), chain.connection(), request.headers()));
+
+                return chain.proceed(request);
+            }
+        }).build();
+
         Retrofit retrofit=new Retrofit.Builder()
                 .baseUrl("http://gank.io/")
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(ok)
                 .build();
         NetApi net=retrofit.create(NetApi.class);
         Call<Photo> photo=net.getboon(type,"10",page);
@@ -64,6 +84,30 @@ public class Assist {
             }
         });
 
+
+    }
+
+    public interface Requst_Save{
+        void setSave_list(List<Save_Love> list);
+    }
+
+    public static void getSave_Photo(final Requst_Save listener,int page){
+
+        User user= BmobUser.getCurrentUser(User.class);
+        if (user!=null){
+            BmobQuery<Save_Love> query=new BmobQuery<>();
+            query.addWhereEqualTo("user",user.getUsername());
+            query.setLimit(10);
+            query.setSkip((page-1)*10);
+            query.findObjects(new FindListener<Save_Love>() {
+                @Override
+                public void done(List<Save_Love> list, BmobException e) {
+                    if (e==null){
+                        listener.setSave_list(list);
+                    }
+                }
+            });
+        }
     }
 
     //启动拍照

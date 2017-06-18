@@ -12,71 +12,57 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.wang.freetime.R;
-import com.wang.freetime.model.Photo;
+import com.wang.freetime.model.Save_Love;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * FreeTime
- * Created by wang on 2017.6.11.
+ * Created by wang on 2017.6.15.
  */
 
-public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyHolder> {
+public class Save_PhotoAdapter extends RecyclerView.Adapter<Save_PhotoAdapter.MyHolder> {
 
-    private Context mContext;
-    private List<Photo.ResultsBean> mdata;
-    private OnClickView myOnclick;
+    private Context context;
+    private List<Save_Love> mlist=new ArrayList<>();
+    private PhotoAdapter.OnClickView myOnclick;
 
-
-    public PhotoAdapter(Context mContext, List<Photo.ResultsBean> mdata) {
-        this.mContext = mContext;
-        this.mdata = mdata;
+    public Save_PhotoAdapter(Context context, List<Save_Love> mlist) {
+        this.context = context;
+        this.mlist = mlist;
     }
 
     @Override
     public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v= LayoutInflater.from(mContext).inflate(R.layout.fragment_photo_item,parent,false);
-        return new MyHolder(v);
+        View view= LayoutInflater.from(context).inflate(R.layout.fragment_photo_item,parent,false);
+        return new MyHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final MyHolder holder, final int position) {
-        Glide.with(mContext).asBitmap().load(mdata.get(position).getUrl()).into(new SimpleTarget<Bitmap>() {
+        Glide.with(context).asBitmap().load(mlist.get(position).getUrl()).into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
                 holder.m_boon.setImageBitmap(resource);
             }
         });
 
-        MyOnclick myOnclick=new MyOnclick(mdata.get(position).getUrl());
-        holder.m_boon.setOnClickListener(myOnclick);
-
+        holder.m_boon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myOnclick.OnClick_img(mlist.get(position).getUrl());
+            }
+        });
     }
 
-    class MyOnclick implements View.OnClickListener{
-        private String url;
-
-        public MyOnclick(String url) {
-            this.url = url;
-        }
-
-        @Override
-        public void onClick(View view) {
-            myOnclick.OnClick_img(url);
-        }
-    }
-
-    public interface OnClickView{
-        void OnClick_img(String url);
-    }
-
-    public void setMyOnclick(OnClickView myOnclick) {
+    public void setMyOnclick(PhotoAdapter.OnClickView myOnclick) {
         this.myOnclick = myOnclick;
     }
 
     @Override
     public int getItemCount() {
-        return mdata.size();
+        return mlist.size();
     }
 
     class MyHolder extends RecyclerView.ViewHolder{
@@ -88,4 +74,5 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyHolder> {
 
         }
     }
+
 }

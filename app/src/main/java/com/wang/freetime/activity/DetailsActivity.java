@@ -9,14 +9,16 @@ import android.support.v4.app.FragmentTransaction;
 import com.wang.freetime.R;
 import com.wang.freetime.Utils.Variable;
 import com.wang.freetime.fragment.HandWork_DetailsFragment;
+import com.wang.freetime.fragment.PhotoFragment;
 import com.wang.freetime.fragment.Photo_DetailsFragment;
+import com.wang.freetime.fragment.Video_DetailsFragment;
 
 /**
  * FreeTime
  * Created by wang on 2017.6.9.
  */
 
-public class DetailsActivity extends BaseActivity {
+public class DetailsActivity extends BaseActivity implements Video_DetailsFragment.Activity_inf_fragmnet{
     private Fragment fragment;
     private FragmentManager fragmentManager;
     @Override
@@ -45,8 +47,30 @@ public class DetailsActivity extends BaseActivity {
                 fragmentTransaction.replace(R.id.m_fragment,photo_detailsFragment);
                 fragmentTransaction.commit();
                 break;
+            case Variable.result_save:
+                PhotoFragment Photo=new PhotoFragment();
+                Bundle b=new Bundle();
+                b.putString("save","love");
+                Photo.setArguments(b);
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.m_fragment,Photo);
+                fragmentTransaction.commit();
+                break;
+            case Variable.content_video:
+                Video_DetailsFragment video_detailsFragment=new Video_DetailsFragment();
+                Bundle url=new Bundle();
+                url.putString("url",getIntent().getStringExtra("url"));
+                video_detailsFragment.setArguments(url);
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.m_fragment,video_detailsFragment);
+                fragmentTransaction.commit();
+                break;
 
         }
     }
 
+    @Override
+    public void goback() {
+        finish();
+    }
 }
