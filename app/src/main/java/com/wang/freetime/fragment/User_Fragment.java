@@ -125,7 +125,9 @@ public class User_Fragment extends Fragment implements AdapterView.OnItemClickLi
                 }
                 break;
             case 1:
-
+                Intent intent=new Intent(context,DetailsActivity.class);
+                intent.putExtra("type",Variable.feed_back);
+                startActivity(intent);
                 break;
             case 2:
                 startPopupwindows(view);

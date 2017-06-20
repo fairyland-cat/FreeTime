@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.wang.freetime.R;
 import com.wang.freetime.Utils.Variable;
+import com.wang.freetime.fragment.FeedBackFragment;
 import com.wang.freetime.fragment.HandWork_DetailsFragment;
 import com.wang.freetime.fragment.PhotoFragment;
 import com.wang.freetime.fragment.Photo_DetailsFragment;
@@ -65,7 +66,12 @@ public class DetailsActivity extends BaseActivity implements Video_DetailsFragme
                 fragmentTransaction.replace(R.id.m_fragment,video_detailsFragment);
                 fragmentTransaction.commit();
                 break;
-
+            case Variable.feed_back:
+                FeedBackFragment feedBackFragment=new FeedBackFragment();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.m_fragment,feedBackFragment);
+                fragmentTransaction.commit();
+                break;
         }
     }
 

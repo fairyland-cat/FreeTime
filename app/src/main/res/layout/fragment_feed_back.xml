@@ -3,45 +3,88 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
     tools:context="com.wang.freetime.fragment.FeedBackFragment">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="64dp">
+        <TextView
+            android:text="反馈/建议"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"/>
+        <View
+            android:background="@drawable/line"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"/>
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
+        android:padding="16dp"
+        android:gravity="center_vertical"
         android:layout_height="wrap_content">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:textColor="@color/bb_darkBackgroundColor"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/feedback"
-            tools:text="反馈"/>
+            android:layout_weight="1"
+            android:text="反馈"/>
 
         <EditText
             android:background="@drawable/feedback_bg"
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            tools:text="请输入反馈建议"
+            android:layout_width="0dp"
+            android:padding="6dp"
+            android:gravity="start"
+            android:layout_height="168dp"
+            android:maxEms="100"
+            android:hint="请输入不超过100字的内容"
             android:textSize="16sp"
-            android:id="@+id/content" />
+            android:id="@+id/content"
+            android:layout_weight="6"/>
 
     </LinearLayout>
 
     <LinearLayout
+        android:padding="16dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp">
         <TextView
-            android:layout_width="wrap_content"
+            android:textColor="@color/bb_darkBackgroundColor"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:text="联系方式"/>
+            android:text="邮箱"/>
         <EditText
-            tools:text="联系方式"
+            android:id="@+id/contact"
+            android:padding="6dp"
+            android:hint="请输入联系方式"
             android:textSize="16sp"
-            android:layout_width="match_parent"
+            android:layout_weight="6"
+            android:layout_width="0dp"
+            android:maxLines="1"
+            android:maxEms="20"
             android:layout_height="wrap_content"
             android:background="@drawable/feedback_bg"/>
     </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/commit"
+            android:text="提交"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
 
 </LinearLayout>

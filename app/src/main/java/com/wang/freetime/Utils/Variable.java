@@ -30,4 +30,5 @@ public  class Variable {
     public static final int result_false=1;
 
     public static final int result_save=0x20;
+    public static final int feed_back=0x11;
 }
