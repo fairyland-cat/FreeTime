@@ -2,20 +2,28 @@ package com.wang.freetime.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.wang.freetime.R;
+import com.wang.freetime.Utils.Assist;
 import com.wang.freetime.Utils.Operation;
 import com.wang.freetime.Utils.Variable;
 import com.wang.freetime.activity.AccountActivity;
@@ -32,6 +40,8 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.DownloadFileListener;
+import cn.bmob.v3.listener.UpdateListener;
+import cn.bmob.v3.listener.UploadFileListener;
 
 
 public class User_Fragment extends Fragment implements AdapterView.OnItemClickListener {
@@ -44,8 +54,13 @@ public class User_Fragment extends Fragment implements AdapterView.OnItemClickLi
     private user_action action;
     private List<Map<String, Object>> my_menu = new ArrayList<>();
 
-    public User_Fragment() {
-        // Required empty public constructor
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
+        if (context instanceof user_action){
+            action=(user_action) context;
+        }
     }
 
     @Override
@@ -70,6 +85,10 @@ public class User_Fragment extends Fragment implements AdapterView.OnItemClickLi
         return view;
     }
 
+    public User_Fragment() {
+        // Required empty public constructor
+    }
+
     public void setUserData() {
         final User user = BmobUser.getCurrentUser(User.class);
         if (user != null) {
@@ -80,7 +99,7 @@ public class User_Fragment extends Fragment implements AdapterView.OnItemClickLi
             exit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    user.logOut();
+                    BmobUser.logOut();
                     setUserData();
                 }
             });
@@ -106,14 +125,81 @@ public class User_Fragment extends Fragment implements AdapterView.OnItemClickLi
                 }
                 break;
             case 1:
-                Log.d("tag", "onItemClick: 反馈");
+
                 break;
             case 2:
+                startPopupwindows(view);
                 break;
             case 3:
                 action.exit();
                 break;
         }
+    }
+
+    /**
+     * Created by wang on 2017.6.20
+     * 启动图片选择裁剪弹窗
+     */
+    private void startIconCrop(View v){
+        final PopupWindow pop;
+        View contentview = LayoutInflater.from(context).inflate(R.layout.popupwindows, null, false);
+        pop = new PopupWindow(contentview, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        pop.setBackgroundDrawable(getResources().getDrawable(R.color.Photo_color, null));
+        pop.showAtLocation(v, Gravity.BOTTOM, 0, 0);
+        pop.setTouchable(true);
+        pop.setFocusable(true);
+        pop.setTouchInterceptor(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+//                pop.dismiss();
+                return false;
+            }
+        });
+        Button for_camera,for_photo,cancel;
+        for_camera= (Button) contentview.findViewById(R.id.for_camera);
+        for_photo= (Button) contentview.findViewById(R.id.for_photo);
+        cancel= (Button) contentview.findViewById(R.id.cancel);
+        for_camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Assist.startCamera(User_Fragment.this);
+            }
+        });
+        for_photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Assist.startPhoto(User_Fragment.this);
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pop.dismiss();
+            }
+        });
+    }
+
+    /**
+     * Created by wang on 2017.6.18
+     * 关于选项的弹窗
+     */
+    private void startPopupwindows(View view){
+        final PopupWindow pop;
+        int width = getResources().getDisplayMetrics().widthPixels;
+        View contentview = LayoutInflater.from(context).inflate(R.layout.about_pop, null, false);
+        pop = new PopupWindow(contentview, width * 4 / 5, ViewGroup.LayoutParams.WRAP_CONTENT);
+        pop.setBackgroundDrawable(getResources().getDrawable(R.color.Photo_color, null));
+        pop.showAtLocation(view, Gravity.CENTER, 0, 0);
+        pop.setTouchable(true);
+//        pop.setFocusable(true);
+        pop.setTouchInterceptor(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                pop.dismiss();
+                return false;
+            }
+        });
+
     }
 
     /**
@@ -126,6 +212,7 @@ public class User_Fragment extends Fragment implements AdapterView.OnItemClickLi
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.user_icon:
+                    startIconCrop(view);
                     break;
                 case R.id.user_name:
                     if (BmobUser.getCurrentUser(User.class) == null) {
@@ -136,16 +223,9 @@ public class User_Fragment extends Fragment implements AdapterView.OnItemClickLi
             }
         }
     }
+
     public interface user_action{
         void exit();
-    }
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        this.context = context;
-        if (context instanceof user_action){
-            action=(user_action) context;
-        }
     }
 
     private void setUser_pic(BmobFile file) {
@@ -187,6 +267,44 @@ public class User_Fragment extends Fragment implements AdapterView.OnItemClickLi
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Variable.result_true) {
             setUserData();
+        }
+        switch (requestCode){
+            case Variable.request_camera_code:
+                Assist.cropphoto(User_Fragment.this, Uri.fromFile(new File(Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),"user_icon.jpg")));
+                break;
+            case Variable.request_photo:
+                Assist.cropphoto(User_Fragment.this,data.getData());
+                break;
+            case Variable.request_crop:
+                Operation op=new Operation(context);
+                String path=context.getExternalCacheDir()+
+                        File.separator+"bmob"+File.separator+"user_icon.jpg";
+                final Bitmap icon=op.decodeBitmap(path);
+                if (icon!=null){
+                   final BmobFile bmobfile=new BmobFile(new File(path));
+                    final User user=BmobUser.getCurrentUser(User.class);
+                    final User newUser=new User();
+                    bmobfile.uploadblock(new UploadFileListener() {
+                        @Override
+                        public void done(BmobException e) {
+                            if (e==null){
+                                newUser.setIcon(bmobfile);
+                                newUser.update(user.getObjectId(), new UpdateListener() {
+                                    @Override
+                                    public void done(BmobException e) {
+                                        user_icon.setImageBitmap(icon);
+                                    }
+                                });
+                            }else {
+                                Toast.makeText(context, "文件上传失败", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                }
+
+                break;
+
         }
     }
 }

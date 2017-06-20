@@ -1,0 +1,47 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context="com.wang.freetime.fragment.FeedBackFragment">
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/feedback"
+            tools:text="反馈"/>
+
+        <EditText
+            android:background="@drawable/feedback_bg"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            tools:text="请输入反馈建议"
+            android:textSize="16sp"
+            android:id="@+id/content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="联系方式"/>
+        <EditText
+            tools:text="联系方式"
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/feedback_bg"/>
+    </LinearLayout>
+
+</LinearLayout>

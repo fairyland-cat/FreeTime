@@ -23,4 +23,8 @@
     <string name="for_photo">从相册选择</string>
     <string name="cancel">取消</string>
     <string name="popup_color">反馈</string>
+
+    //关于
+    <string name="email">fairyland-cat@foxmail.com</string>
+    <string name="book">欢迎大家一起交流学习</string>
 </resources>
