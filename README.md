@@ -1,7 +1,7 @@
-# MyMusic
+# FreeTime
 
 
-这是一个简单的android音乐播放器
+这是一个信息展示app
 
 
 ## 截图
